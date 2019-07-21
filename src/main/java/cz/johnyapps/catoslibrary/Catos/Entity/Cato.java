@@ -8,7 +8,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -83,6 +86,10 @@ public class Cato {
     }
 
     public void save(Context context) {
+        save(context, new File("cato.json"));
+    }
+
+    public void save(Context context, File file) {
         try {
             JSONObject cato = new JSONObject();
             cato.put("background", color_background);
@@ -98,8 +105,13 @@ public class Cato {
             cato.put("tail_top", color_tailTop);
             cato.put("collar", color_collar);
 
-            OutputStreamWriter output = new OutputStreamWriter(context.openFileOutput("cato.json", Context.MODE_PRIVATE));
-            output.write(cato.toString());
+            FileOutputStream output = context.openFileOutput(file.getPath(), Context.MODE_PRIVATE);
+            char[] chars = cato.toString().toCharArray();
+
+            for (char c : chars) {
+                output.write((int) c);
+            }
+
             output.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -111,13 +123,18 @@ public class Cato {
     }
 
     public void load(Context context) {
+        load(context, new File("cato.json"));
+    }
+
+    public void load(Context context, File file) {
         try {
-            InputStreamReader input = new InputStreamReader(context.openFileInput("cato.json"));
+            FileInputStream fileInput = context.openFileInput(file.getPath());
+            InputStreamReader input = new InputStreamReader(fileInput);
             BufferedReader bufferedReader = new BufferedReader(input);
             String receiveString;
             StringBuilder stringBuilder = new StringBuilder();
 
-            while ( (receiveString = bufferedReader.readLine()) != null ) {
+            while ((receiveString = bufferedReader.readLine()) != null ) {
                 stringBuilder.append(receiveString);
             }
 
