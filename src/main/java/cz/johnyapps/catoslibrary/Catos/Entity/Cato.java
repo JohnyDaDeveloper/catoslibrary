@@ -21,6 +21,9 @@ import java.util.List;
 
 import cz.johnyapps.catoslibrary.R;
 
+/**
+ * Cato. To draw cato, use {@link cz.johnyapps.catoslibrary.Catos.View.CatoView}
+ */
 public class Cato {
     private static final String TAG = "Cato";
 
@@ -77,6 +80,9 @@ public class Cato {
 
     public static final List<CatoInfo> INFOS = new ArrayList<>();
 
+    /**
+     * Inicializaton
+     */
     public Cato() {
         if (INFOS.isEmpty()) {
             INFOS.add(new CatoInfo("Background", BACKGROUND));
@@ -93,6 +99,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Saves cato to file "cato.json"
+     * @param context   Context
+     * @see #save(Context, FileOutputStream)
+     */
     public void save(Context context) {
         try {
             FileOutputStream output = context.openFileOutput("cato.json", Context.MODE_PRIVATE);
@@ -102,6 +113,12 @@ public class Cato {
         }
     }
 
+    /**
+     * Saves cato to given file
+     * @param context   Context
+     * @param file      File
+     * @see #save(Context, FileOutputStream)
+     */
     public void saveToFile(Context context, File file) {
         try {
             FileOutputStream stream = new FileOutputStream(file);
@@ -111,6 +128,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Writes cato with given {@link FileOutputStream}
+     * @param context   Context
+     * @param output    Output stream
+     */
     private void save(Context context, FileOutputStream output) {
         try {
             JSONObject cato = new JSONObject();
@@ -153,6 +175,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Loads cato from "cato.json"
+     * @param context   Context
+     * @see #load(FileInputStream)
+     */
     public void load(Context context) {
         try {
             File file = new File("cato.json");
@@ -163,6 +190,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Loads cato from given file
+     * @param file  File
+     * @see #load(FileInputStream)
+     */
     public void loadFromFile(File file) {
         try {
             FileInputStream fileInput = new FileInputStream(file);
@@ -172,6 +204,31 @@ public class Cato {
         }
     }
 
+    /**
+     * Loads file from raw resources
+     * @param context   Context
+     * @param file      File name (without suffix)
+     * @see #load(InputStreamReader)
+     */
+    public void loadFromRawResources(Context context, String file) {
+        try {
+            int id = context.getResources().getIdentifier(file, "raw", context.getPackageName());
+            InputStream inputStream = context.getResources().openRawResource(id);
+            InputStreamReader input = new InputStreamReader(inputStream);
+
+            load(input);
+
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads cato with given {@link FileInputStream}
+     * @param fileInput    Input stream
+     * @see #load(InputStreamReader)
+     */
     private void load(FileInputStream fileInput) {
         try {
             InputStreamReader input = new InputStreamReader(fileInput);
@@ -187,20 +244,10 @@ public class Cato {
         }
     }
 
-    public void loadFromRawResources(Context context, String file) {
-        try {
-            int id = context.getResources().getIdentifier(file, "raw", context.getPackageName());
-            InputStream inputStream = context.getResources().openRawResource(id);
-            InputStreamReader input = new InputStreamReader(inputStream);
-
-            load(input);
-
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Loads cato from file using given {@link InputStreamReader}
+     * @param input Input stream
+     */
     private void load(InputStreamReader input) {
         try {
             BufferedReader bufferedReader = new BufferedReader(input);
@@ -288,6 +335,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Calculate color of outer ears
+     * @param color Color of inner ears
+     * @return      Color
+     */
     private int calculateEarOut(int color) {
         int red;
         int green;
@@ -314,6 +366,11 @@ public class Cato {
         return Color.argb(255, red, green, blue);
     }
 
+    /**
+     * Calculate color of inner ears
+     * @param color Color of outer ears
+     * @return      Color of inner ears
+     */
     private int calculateEarIn(int color) {
         int red;
         int green;
@@ -340,6 +397,11 @@ public class Cato {
         return Color.argb(255, red, green, blue);
     }
 
+    /**
+     * Return color of body part
+     * @param id    Id of body part
+     * @return      Color
+     */
     public int getColor(int id) {
         switch (id) {
             case PAW_LEFT_FRONT: {
@@ -437,6 +499,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Sets color to body part
+     * @param id    Id of body part
+     * @param color Color
+     */
     public void setColor(int id, int color) {
         switch (id) {
             case PAW_LEFT_FRONT: {
@@ -560,6 +627,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Returns style of body part
+     * @param id    Id of body part
+     * @return      Style
+     */
     public int getStyle(int id) {
         switch (id) {
             case MOUTH: {
@@ -573,6 +645,11 @@ public class Cato {
         }
     }
 
+    /**
+     * Sets style to body part
+     * @param id    Id of body part
+     * @param style Style
+     */
     public void setStyle(int id, int style) {
         switch (id) {
             case MOUTH: {
@@ -587,6 +664,9 @@ public class Cato {
         }
     }
 
+    /**
+     * Saves info about cato
+     */
     public class CatoInfo {
         public String name;
         public int[] ids;
