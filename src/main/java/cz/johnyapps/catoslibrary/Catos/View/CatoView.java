@@ -50,14 +50,14 @@ public class CatoView extends View {
         this.draw(canvas);
 
         File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Catos");
-        boolean foldersNotCreated = false;
+        boolean foldersCreated = true;
 
         if (!folder.exists() && !folder.mkdirs()) {
-            foldersNotCreated = true;
+            foldersCreated = false;
             Toast.makeText(getContext(), "Saving failed (#0)", Toast.LENGTH_LONG).show();
         }
 
-        if (!foldersNotCreated) {
+        if (foldersCreated) {
             int count = 0;
             String filename = "cato_" + count;
             boolean reset;
@@ -89,6 +89,36 @@ public class CatoView extends View {
         }
 
         return false;
+    }
+
+    public void export() {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/Catos");
+        File[] files = folder.listFiles();
+        boolean foldersCreated = true;
+
+        if (!folder.exists() && !folder.mkdirs()) {
+            foldersCreated = false;
+            Toast.makeText(getContext(), "Saving failed (#0)", Toast.LENGTH_LONG).show();
+        }
+
+        if (foldersCreated) {
+            String original = "cato";
+            String name = original;
+            int i = 1;
+
+            for (File file : files) {
+                if (file.getName().equals(name + ".json")) {
+                    name = original + "_" + i;
+                    i++;
+                } else {
+                    break;
+                }
+            }
+
+            File file = new File(folder.getPath(), name + ".json");
+
+            cato.save(getContext(), file);
+        }
     }
 
     public void setCato(Cato cato) {

@@ -3,6 +3,7 @@ package cz.johnyapps.catoslibrary.Catos.Entity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +106,7 @@ public class Cato {
             cato.put("tail_top", color_tailTop);
             cato.put("collar", color_collar);
 
-            FileOutputStream output = context.openFileOutput(file.getPath(), Context.MODE_PRIVATE);
+            FileOutputStream output = new FileOutputStream(file.getPath());
             char[] chars = cato.toString().toCharArray();
 
             for (char c : chars) {
@@ -113,6 +114,8 @@ public class Cato {
             }
 
             output.close();
+
+            Toast.makeText(context, "Saved!", Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -123,13 +126,40 @@ public class Cato {
     }
 
     public void load(Context context) {
-        load(context, new File("cato.json"));
+        loadFromFile(context, new File("cato.json"));
     }
 
-    public void load(Context context, File file) {
+    public void loadFromFile(Context context, File file) {
         try {
             FileInputStream fileInput = context.openFileInput(file.getPath());
             InputStreamReader input = new InputStreamReader(fileInput);
+
+            load(input);
+
+            fileInput.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadFromRawResources(Context context, String file) {
+        try {
+            int id = context.getResources().getIdentifier(file, "raw", context.getPackageName());
+            InputStream inputStream = context.getResources().openRawResource(id);
+            InputStreamReader input = new InputStreamReader(inputStream);
+
+            load(input);
+
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void load(InputStreamReader input) {
+        try {
             BufferedReader bufferedReader = new BufferedReader(input);
             String receiveString;
             StringBuilder stringBuilder = new StringBuilder();
