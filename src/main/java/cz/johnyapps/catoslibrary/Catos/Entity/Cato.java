@@ -19,6 +19,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.johnyapps.catoslibrary.R;
+
 public class Cato {
     private static final String TAG = "Cato";
 
@@ -45,8 +47,8 @@ public class Cato {
     public static final int LEG_RIGHT_BACK = 18;
     public static final int BACKGROUND = 19;
 
-    public static final int MOUTH_STYLE_HMM = 0;
-    public static final int MOUTH_STYLE_YASS = 1;
+    public static final int MOUTH_STYLE_HMM = R.drawable.mouth_0;
+    public static final int MOUTH_STYLE_YASS = R.drawable.mouth_1;
 
     private int color_leftFrontPaw = Color.BLACK;
     private int color_rightFrontPaw = Color.BLACK;
@@ -554,6 +556,19 @@ public class Cato {
             default: {
                 Log.w(TAG, "Invalid id");
                 break;
+            }
+        }
+    }
+
+    public int getStyle(int id) {
+        switch (id) {
+            case MOUTH: {
+                return style_mouth;
+            }
+
+            default: {
+                Log.w(TAG, "Invalid id");
+                return 0;
             }
         }
     }

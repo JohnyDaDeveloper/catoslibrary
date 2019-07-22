@@ -183,7 +183,7 @@ public class CatoView extends View {
 
     private void drawFace(Canvas canvas) {
         drawDrawable(canvas, R.drawable.eyes, cato.getColor(Cato.EYES));
-        drawDrawable(canvas, R.drawable.mouth_0, cato.getColor(Cato.MOUTH));
+        drawDrawable(canvas, cato.getStyle(Cato.MOUTH), cato.getColor(Cato.MOUTH));
     }
 
     private void drawCollar(Canvas canvas) {
