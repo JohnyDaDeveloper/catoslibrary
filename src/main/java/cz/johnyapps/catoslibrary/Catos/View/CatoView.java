@@ -150,7 +150,7 @@ public class CatoView extends View {
 
             drawCollar(canvas);
 
-            drawlegs(canvas);
+            drawLegs(canvas);
             drawPaws(canvas);
 
             drawTail(canvas);
@@ -190,7 +190,7 @@ public class CatoView extends View {
         drawDrawable(canvas, R.drawable.collar, cato.getColor(Cato.COLLAR));
     }
 
-    private void drawlegs(Canvas canvas) {
+    private void drawLegs(Canvas canvas) {
         drawDrawable(canvas, R.drawable.leg_1, cato.getColor(Cato.LEG_RIGHT_FRONT));
         drawDrawable(canvas, R.drawable.leg_2, cato.getColor(Cato.LEG_RIGHT_BACK));
         drawDrawable(canvas, R.drawable.leg_3, cato.getColor(Cato.LEG_LEFT_BACK));
