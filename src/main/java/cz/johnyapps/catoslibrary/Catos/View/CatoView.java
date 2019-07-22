@@ -75,7 +75,7 @@ public class CatoView extends View {
      * Sets padding
      * @param padding   Padding
      */
-    private void setPadding(double padding) {
+    public void setPadding(double padding) {
         this.padding = padding;
     }
 
@@ -187,7 +187,6 @@ public class CatoView extends View {
 
             int width = getWidth();
             int height = getHeight();
-            padding = 0.1;
 
             int heightOffset = width < height ? (int) Math.round((height - width) * (0.5 - padding)) : 0;
             int widthOffset = height < width ? (int) Math.round((width - height) * (0.5 - padding)) : 0;
