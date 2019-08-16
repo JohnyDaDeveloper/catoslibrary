@@ -32,6 +32,8 @@ public class CatoView extends View {
     private int right = 0;
     private int bottom = 0;
 
+    private boolean fastDrawing;
+
     /**
      * Inicialization
      * @param context   Context
@@ -68,6 +70,8 @@ public class CatoView extends View {
     private void initialize() {
         cato = new Cato();
         padding = 0.1;
+        fastDrawing = false;
+
         invalidate();
     }
 
@@ -77,6 +81,14 @@ public class CatoView extends View {
      */
     public void setPadding(double padding) {
         this.padding = padding;
+    }
+
+    /**
+     * Sets fastDrawing mode (WARNING! works with only one view)
+     * @param fastDrawing   True - fast drawing enabled, False - fast drawing disabled
+     */
+    public void setFastDrawing(boolean fastDrawing) {
+        this.fastDrawing = fastDrawing;
     }
 
     /**
@@ -222,18 +234,37 @@ public class CatoView extends View {
      * @param color     Color
      */
     private void drawDrawable(Canvas canvas, int id, int color) {
+        if (fastDrawing) {
+            drawFastDrawable(canvas, id, color);
+        } else {
+            Drawable drawable = getResources().getDrawable(id, getContext().getTheme());
+
+            if (color < 0) {
+                drawable.setTint(color);
+            }
+
+            Bitmap bitmap = getBitmap((VectorDrawable) drawable, canvas);
+            Paint paint = new Paint(color);
+
+            canvas.drawBitmap(bitmap, 0, 0, paint);
+        }
+    }
+
+    /**
+     * Draes colored drawable (WARNING! this works with only one view in use!)
+     * @param canvas    Canvas
+     * @param id        Id of drawable
+     * @param color     Color
+     */
+    private void drawFastDrawable(Canvas canvas, int id, int color) {
         Drawable drawable = getResources().getDrawable(id, getContext().getTheme());
-        //drawable.setBounds(left, top, right, bottom);
+        drawable.setBounds(left, top, right, bottom);
 
         if (color < 0) {
             drawable.setTint(color);
         }
 
-        Bitmap bitmap = getBitmap((VectorDrawable) drawable, canvas);
-        Paint paint = new Paint(color);
-
-        //drawable.draw(canvas);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
+        drawable.draw(canvas);
     }
 
     /**
